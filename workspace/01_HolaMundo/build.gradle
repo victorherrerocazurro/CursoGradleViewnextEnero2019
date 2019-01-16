@@ -1,0 +1,143 @@
+buildscript{
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        // https://mvnrepository.com/artifact/javax.inject/javax.inject
+        classpath group: 'javax.inject', name: 'javax.inject', version: '1'
+        classpath "gradle.plugin.org.gretty:gretty:2.3.1"
+    }
+}
+
+class CustomTask extends DefaultTask {
+    final String message
+    final int number
+
+    @javax.inject.Inject
+    CustomTask(String message, int number) {
+        this.message = message
+        this.number = number
+    }
+}
+
+plugins {
+    id 'groovy'
+    id 'java'
+    id "org.gretty" version "2.3.1"
+    id 'maven-publish'
+}
+
+//apply plugin: 'java'
+
+group 'com.curso.gradle'
+version '1.0.0-SNAPSHOT'
+
+project.ext.descripcion = 'Este es un proyecto de ejemplo de Gradle'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.3.11'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+println 'Fase de Configuracion'
+
+task miTarea {
+    println 'Fase de Configuracion'
+    doFirst {
+        println 'Fase de Ejecucion (First)'
+    }
+    doLast {
+        println 'Fase de Ejecucion (End)'
+    }
+}
+
+task copiar {
+    doLast {
+        if(project.hasProperty("descripcion")) {
+            project.copy {
+                from "/"
+                include "*.gradle"
+                into "build/"
+            }
+        }
+    }
+}
+
+task copyDocs(type: Copy) {
+    from 'src/main/doc'
+    into 'build/target/doc'
+}
+
+
+task borrar {
+    doLast {
+        project.delete("/build")
+    }
+}
+
+task ipconfig {
+    doLast {
+        project.exec {
+            commandLine = ['ipconfig']
+        }
+    }
+}
+
+task reducida << {
+    project.exec {
+        commandLine = ['ipconfig']
+    }
+}
+
+task primera {
+    doLast {
+        println "primera"
+    }
+}
+
+task segunda {
+    group 'build'
+    /*onlyIf {
+        project.hasProperty("descripcion")
+    }*/
+    //dependsOn primera
+    mustRunAfter primera
+    finalizedBy clean
+    doLast {
+        println "segunda"
+    }
+}
+
+segunda.onlyIf {
+    project.hasProperty("descripcion")
+}
+
+tasks.create('myTask', CustomTask, 'hello', 42)
+
+myTask.doLast {
+    println message
+}
+
+task copy {
+    doLast {
+        println('I am the first')
+    }
+    
+}
+
+task copy(overwrite: true) {
+    doLast {
+        println('I am the new one.')
+    }
+}
+
