@@ -1,0 +1,12 @@
+Crear un Plugin
+	* Despliegue un war en un tomcat local.
+	* Arranqe el tomcat.
+	* Pare el tomcat y borre el war.
+
+Fase 2: 
+
+Añadir estas tareas a un proyecto de tipo war, que dispone de test de integracion
+formando un ciclo de vida.
+
+	* Pre-Integartion-test = despliegue y arranque
+	* Post-Integartion-test = parada
