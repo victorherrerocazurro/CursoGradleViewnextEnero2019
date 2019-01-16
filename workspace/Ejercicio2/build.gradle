@@ -1,0 +1,61 @@
+buildscript {
+    dependencies {
+        classpath "com.curso.gradle:TomcatPlugin:1.0"
+    }
+}
+
+plugins {
+    id 'war'
+}
+
+apply plugin: "tomcat-plugin"
+
+group 'com.curso.gradle'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+/*task desplegar(type: Copy) {
+    group "tomcat"
+    from "$buildDir/libs"
+    into "D:\\utilidades\\apache-tomcat-9.0.13\\webapps"
+}
+
+//http://localhost:8080/Ejercicio2-1.0-SNAPSHOT/
+
+task arrancar(type: Exec) {
+    group "tomcat"
+    workingDir 'D:\\utilidades\\apache-tomcat-9.0.13\\bin'
+    commandLine 'cmd', '/c', 'startup.bat'
+}
+
+task parar {
+    group "tomcat"
+    doLast {
+
+        project.delete("D:\\utilidades\\apache-tomcat-9.0.13\\webapps\\$war.archiveName")
+        project.delete("D:\\utilidades\\apache-tomcat-9.0.13\\webapps\\$name-$version\\")
+
+        project.exec {
+            workingDir 'D:\\utilidades\\apache-tomcat-9.0.13\\bin'
+            commandLine 'cmd', '/c', 'shutdown.bat'
+        }
+
+    }
+}*/
+
+tomcat {
+    originDir "$buildDir/libs"
+    deployDir "D:\\utilidades\\apache-tomcat-9.0.13\\webapps"
+    tomcatHome "D:\\utilidades\\apache-tomcat-9.0.13"
+    warName "$name-$version"
+
+}
