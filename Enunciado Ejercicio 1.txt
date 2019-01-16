@@ -1,0 +1,10 @@
+- Crear un proyecto Gradle
+- Añadir plugin de java
+- Crear una clase de negocio y una clase de test (emplear junit)-> @Test en un metodo
+- Añadir Javadoc a ambos ficheros /** */
+- Ejecutar tarea de javadoc, queremos los HTML tanto del negocio como de los test.
+- Una vez tenamos los HTML, generar un zip, en el que incluyamos los dos tipos de 
+HTML y ademas el codigo fuente del proyecto (src/main/java y src/test/java)
+- Descomprimir el zip generado prevamente en un carpeta "c:/site".
+- Que definan un ciclo de vida, que se ejecuten en el orden en que se ejecutan en el 
+documento

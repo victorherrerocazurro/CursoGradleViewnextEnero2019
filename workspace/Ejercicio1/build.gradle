@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group 'com.curso.gradle'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+task generarJavaDoc(type: Javadoc) {
+    group 'documentation'
+    source = [sourceSets.main.allJava,sourceSets.test.allJava]
+    classpath = sourceSets.test.compileClasspath
+}
+
+task archivarJavaDoc(type: Zip) {
+    group 'documentation'
+    dependsOn generarJavaDoc
+    from(["${buildDir}/docs/javadoc", "/src/main/java", "/src/test/java"])
+    archiveName 'javadoc_sources.zip'
+}
+
+task desplegarJavaDoc(type: Copy) {
+    group 'documentation'
+    dependsOn archivarJavaDoc
+    def zipFile = file("${buildDir}/distributions/javadoc_sources.zip")
+    def outputDir = file("c:\\site")
+
+    from zipTree(zipFile)
+    into outputDir
+}
